@@ -39,11 +39,24 @@ void setup() {
 }
 
 void loop() {
+  performEEPROM();
+  
+  //This is a very passive use-case, so it doesn't really matter if the arduino is just sitting around.
+  delay(1000);
 }
 
 
 
-//EEPROM save&load
+//EEPROM-------------------------------------------------------------------------------------------------------
+long lastWriteMillis;
+void performEEPROM() {
+  //Don't save to EEPROM so often -- save the EEPROM!
+  if (millis() > lastWriteMillis + 60000) {
+    writeStatus();
+    lastWriteMillis = millis();
+  }
+}
+
 //Writes unit status to EEPROM
 //tempvars to check for change - to preserve the EEPROMs life
 boolean idleOld = false;
