@@ -147,7 +147,10 @@ const int thermistor[] PROGMEM = { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14
 
 //Returns the room temperature * 10 in celcius
 int getTemp() {
-  return pgm_read_word(&(thermistor[analogRead(thermistorPin) - 238]));
+  int value = analogRead(thermistorPin) - 238;
+  if (value >= 0 && value <= 324) {
+    return pgm_read_word(&(thermistor[value]));
+  } else /*Out of range*/ return 0;
 }
 
 
